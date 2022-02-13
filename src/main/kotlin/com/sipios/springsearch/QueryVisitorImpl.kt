@@ -3,11 +3,12 @@ package com.sipios.springsearch
 import com.sipios.springsearch.anotation.SearchSpec
 import com.sipios.springsearch.grammar.QueryBaseVisitor
 import com.sipios.springsearch.grammar.QueryParser
-import org.springframework.data.jpa.domain.Specification
+import org.antlr.v4.runtime.atn.SemanticContext.and
+import org.springframework.data.jpa.domain.Specifications
 
-class QueryVisitorImpl<T>(private val searchSpecAnnotation: SearchSpec) : QueryBaseVisitor<Specification<T>>() {
+class QueryVisitorImpl<T>(private val searchSpecAnnotation: SearchSpec) : QueryBaseVisitor<Specifications<T>>() {
     private val ValueRegExp = Regex(pattern = "^(\\*?)(.+?)(\\*?)$")
-    override fun visitOpQuery(ctx: QueryParser.OpQueryContext): Specification<T> {
+    override fun visitOpQuery(ctx: QueryParser.OpQueryContext): Specifications<T> {
         val left = visit(ctx.left)
         val right = visit(ctx.right)
 
@@ -15,22 +16,23 @@ class QueryVisitorImpl<T>(private val searchSpecAnnotation: SearchSpec) : QueryB
             "AND" -> left.and(right)
             "OR" -> left.or(right)
             else -> left.and(right)
+//            else -> left.
         }
     }
 
-    override fun visitPriorityQuery(ctx: QueryParser.PriorityQueryContext): Specification<T> {
+    override fun visitPriorityQuery(ctx: QueryParser.PriorityQueryContext): Specifications<T> {
         return visit(ctx.query())
     }
 
-    override fun visitAtomQuery(ctx: QueryParser.AtomQueryContext): Specification<T> {
+    override fun visitAtomQuery(ctx: QueryParser.AtomQueryContext): Specifications<T> {
         return visit(ctx.criteria())
     }
 
-    override fun visitInput(ctx: QueryParser.InputContext): Specification<T> {
+    override fun visitInput(ctx: QueryParser.InputContext): Specifications<T> {
         return visit(ctx.query())
     }
 
-    override fun visitCriteria(ctx: QueryParser.CriteriaContext): Specification<T> {
+    override fun visitCriteria(ctx: QueryParser.CriteriaContext): Specifications<T>? {
         val key = ctx.key()!!.text
         val op = ctx.op()!!.text
         var value = ctx.value()!!.text
@@ -51,7 +53,8 @@ class QueryVisitorImpl<T>(private val searchSpecAnnotation: SearchSpec) : QueryB
             matchResult.groups[2]!!.value,
             matchResult.groups[3]!!.value
         )
-
-        return SpecificationImpl(criteria, searchSpecAnnotation)
+        var specification = SpecificationImpl<T>(criteria, searchSpecAnnotation)
+        return Specifications.where(specification)
+//        return SpecificationImpl(criteria, searchSpecAnnotation)
     }
 }

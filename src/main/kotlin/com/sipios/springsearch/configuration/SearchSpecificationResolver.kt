@@ -2,10 +2,10 @@ package com.sipios.springsearch.configuration
 
 import com.sipios.springsearch.SpecificationsBuilder
 import com.sipios.springsearch.anotation.SearchSpec
+import lombok.NonNull
 import org.slf4j.LoggerFactory
 import org.springframework.core.MethodParameter
 import org.springframework.data.jpa.domain.Specification
-import org.springframework.lang.NonNull
 import org.springframework.web.bind.support.WebDataBinderFactory
 import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver

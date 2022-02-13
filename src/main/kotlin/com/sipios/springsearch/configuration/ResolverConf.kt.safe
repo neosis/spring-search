@@ -1,0 +1,90 @@
+package com.sipios.springsearch.configuration
+
+import org.springframework.context.annotation.Configuration
+import org.springframework.format.FormatterRegistry
+import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.validation.MessageCodesResolver
+import org.springframework.validation.Validator
+import org.springframework.web.method.support.HandlerMethodArgumentResolver
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler
+import org.springframework.web.servlet.HandlerExceptionResolver
+import org.springframework.web.servlet.config.annotation.*
+
+@Configuration
+class ResolverConf : WebMvcConfigurer {
+    override fun configurePathMatch(p0: PathMatchConfigurer?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun configureContentNegotiation(p0: ContentNegotiationConfigurer?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun configureAsyncSupport(p0: AsyncSupportConfigurer?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun configureDefaultServletHandling(p0: DefaultServletHandlerConfigurer?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun addFormatters(p0: FormatterRegistry?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun addInterceptors(p0: InterceptorRegistry?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun addResourceHandlers(p0: ResourceHandlerRegistry?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun addCorsMappings(p0: CorsRegistry?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun addViewControllers(p0: ViewControllerRegistry?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun configureViewResolvers(p0: ViewResolverRegistry?) {
+        TODO("Not yet implemented")
+    }
+
+    /**
+     * Register a SearchSpecificationResolver instance to the list of argument resolver used by Spring MVC
+     * @param argumentResolvers The current list of argumentResolversUsed by Spring MVC
+     */
+    override fun addArgumentResolvers(argumentResolvers: MutableList<HandlerMethodArgumentResolver>) {
+        argumentResolvers.add(SearchSpecificationResolver())
+    }
+
+    override fun addReturnValueHandlers(p0: MutableList<HandlerMethodReturnValueHandler>?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun configureMessageConverters(p0: MutableList<HttpMessageConverter<*>>?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun extendMessageConverters(p0: MutableList<HttpMessageConverter<*>>?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun configureHandlerExceptionResolvers(p0: MutableList<HandlerExceptionResolver>?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun extendHandlerExceptionResolvers(p0: MutableList<HandlerExceptionResolver>?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getValidator(): Validator {
+        TODO("Not yet implemented")
+    }
+
+    override fun getMessageCodesResolver(): MessageCodesResolver {
+        TODO("Not yet implemented")
+    }
+}

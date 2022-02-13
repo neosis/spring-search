@@ -1,16 +1,9 @@
 package com.sipios.springsearch
 
-import com.sipios.springsearch.anotation.SearchSpec
 import com.sipios.springsearch.strategies.ParsingStrategy
-import java.util.ArrayList
-import javax.persistence.criteria.CriteriaBuilder
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Path
-import javax.persistence.criteria.Predicate
-import javax.persistence.criteria.Root
 import org.springframework.data.jpa.domain.Specification
-import org.springframework.http.HttpStatus
-import org.springframework.web.server.ResponseStatusException
+import com.sipios.springsearch.anotation.SearchSpec
+import javax.persistence.criteria.*
 
 /**
  * Implementation of the JPA Specification based on a Search Criteria
@@ -19,8 +12,11 @@ import org.springframework.web.server.ResponseStatusException
  *
  * @param <T>The class on which the specification will be applied</T>
  * */
-class SpecificationImpl<T>(private val criteria: SearchCriteria, private val searchSpecAnnotation: SearchSpec) : Specification<T> {
-    @Throws(ResponseStatusException::class)
+class SpecificationImpl<T>(private val criteria: SearchCriteria, private val searchSpecAnnotation: SearchSpec) :
+    Specification<T> {
+
+    @Throws(Exception::class)
+//    @Throws(ResponseStatusException::class)
     override fun toPredicate(root: Root<T>, query: CriteriaQuery<*>, builder: CriteriaBuilder): Predicate? {
         val nestedKey = criteria.key.split(".")
         val nestedRoot = getNestedRoot(root, nestedKey)
@@ -31,8 +27,9 @@ class SpecificationImpl<T>(private val criteria: SearchCriteria, private val sea
         try {
             value = strategy.parse(criteria.value, fieldClass)
         } catch (e: Exception) {
-            throw ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
+            throw Exception(
+//            throw (
+//                HttpStatus.BAD_REQUEST,
                 "Could not parse input for the field $criteriaKey as a ${fieldClass.simpleName}"
             )
         }
